@@ -1,0 +1,89 @@
+package br.com.nico.AppPessoaContatos.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.nico.AppPessoaContatos.model.Pessoa;
+import br.com.nico.AppPessoaContatos.service.PessoaService;
+
+@RestController
+@RequestMapping("/api/pessoas")
+public class PessoaController {
+	
+	@Autowired
+	PessoaService pessoaService;
+	
+	@PostMapping 			// 		(/api/pessoas)POST 
+	public ResponseEntity<Pessoa> save(@RequestBody Pessoa pessoa) { 
+		Pessoa newPessoa = pessoaService.save(pessoa);
+		if(newPessoa == null) {
+			return ResponseEntity.notFound().build();
+		} else {	
+		return ResponseEntity.ok(newPessoa);
+		}
+	}
+
+	@GetMapping("/{id}")	 // 	(/api/pessoas/{id}) //GET Pessoa por ID
+	public ResponseEntity<Optional<Pessoa>> findById(@PathVariable Long id) {  
+		Optional<Pessoa> pessoa = pessoaService.findById(id);
+		if(pessoa.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		} else {
+			
+		} return ResponseEntity.ok(pessoa);
+	}
+	
+	@GetMapping 			// 		(/api/pessoas) GET lista todas as Pessoas
+	public ResponseEntity<List<Pessoa>> findAll() { 	
+		List<Pessoa> pessoa = pessoaService.findAll();
+		if(pessoa == null) {
+			return ResponseEntity.notFound().build();
+		} else {
+			return ResponseEntity.ok(pessoa);
+		}
+	}
+	
+	@PutMapping				//		(/api/pessoas/{id}) PUT atualiza uma Pessoa existente
+	public ResponseEntity<Pessoa> update(@RequestBody Pessoa pessoa) {
+		Pessoa updPessoa = pessoaService.update(pessoa);
+		if(updPessoa == null) {
+			return ResponseEntity.notFound().build();
+		} else {
+			return ResponseEntity.ok(updPessoa);
+		}
+	}
+	
+	@DeleteMapping			//		(/api/pessoas/{id}) DELETE  remove uma Pessoa por ID
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		pessoaService.delete(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+//	
+
+	
+//	GET /api/pessoas/maladireta/{id} (retorna os dados de uma Pessoa por ID para mala direta)
+//	No endpoint de mala direta, utilizar o conceito de DTO. 
+//	Este conceito cria uma classe diferente da classe Pessoa, 
+//	com apenas os dados que precisamos (pesquisar!). 
+//	Dê preferência para a criação de Records (Java 17+).
+//	Utilizar os campos para o DTO: ID; Nome; Concatenação do Endereço, CEP, Cidade, UF
+//	Exemplo:
+//	{
+//	“ID”: 1,
+//	“Nome”: “Fulano”,
+//	“MalaDireta”: “Rua A, 1 – CEP: 11111-000 – Cidade/UF”
+//	}
+	
+}
