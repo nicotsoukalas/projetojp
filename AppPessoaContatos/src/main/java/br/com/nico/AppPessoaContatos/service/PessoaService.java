@@ -16,25 +16,21 @@ public class PessoaService {
 	private PessoaRepository pessoaRepository;
 	
 	public Pessoa save(Pessoa pessoa) {  //	Criar Pessoa Falta tratamento Se algum campo for nulo
-//		
-//		//pesquisar se o produto existe
-//				Optional<Produto> findProduto = produtoRepository.findById(produto.getId());
-//				
-//				//se o produto existir, atualizo:
-//				if(findProduto.isPresent()) {
-//					//criar um novo objeto do produto  
-//					// e lançar os dados do objeto de parâmetro neste novo obj e grava
-//					Produto updProduto = findProduto.get(); //setId
-//					updProduto.setCodigoBarras(produto.getCodigoBarras());
-//					updProduto.setNome(produto.getNome());
-//					updProduto.setPreco(produto.getPreco());
-//					//retornar o objeto gravado
-//					return produtoRepository.save(updProduto); //"UPDATE"
-//				}		
-//				//retornar o objeto gravado
-//				return produtoRepository.save(produto);  //"INSERT"
 		
-		return pessoaRepository.save(pessoa);
+		Optional<Pessoa> findPessoa = pessoaRepository.findById(pessoa.getId()); //pesquisar se a pessoa  existe
+			if(findPessoa.isPresent()) { 
+				Pessoa updPessoa = findPessoa.get(); // define o id em updPessoa			
+	            updPessoa.setNome(pessoa.getNome());
+	            updPessoa.setEndereco(pessoa.getEndereco());
+	            updPessoa.setCep(pessoa.getCep());
+	            updPessoa.setCidade(pessoa.getCidade());
+	            updPessoa.setUf(pessoa.getUf());
+				return pessoaRepository.save(updPessoa); // update
+			} else {
+				System.out.println("Pessoa não encontrada neste Id. Gravando nova pessoa");
+				return pessoaRepository.save(pessoa); // insert
+			}
+		
 	}
 
 	public Optional<Pessoa> findById(Long id) {  //	Obter Pessoa por ID
@@ -46,27 +42,20 @@ public class PessoaService {
 	}
 	
 	public Pessoa update(Pessoa pessoa) {  //	Atualizar Pessoa por ID Falta tratamento
-		return pessoaRepository.save(pessoa);
-				
 		
-//			Optional<Produto> findProduto = produtoRepository.findById(produto.getId());
-//			
-//			//se o produto existir, atualizo:
-//			if(findProduto.isPresent()) {
-//				//criar um novo objeto do produto  
-//				// e lançar os dados do objeto de parâmetro neste novo obj e grava
-//				Produto updProduto = findProduto.get(); //setId
-//				updProduto.setCodigoBarras(produto.getCodigoBarras());
-//				updProduto.setNome(produto.getNome());
-//				updProduto.setPreco(produto.getPreco());
-//				//retornar o objeto gravado
-//				return produtoRepository.save(updProduto); //"UPDATE"
-//			}		
-//			//retornar o objeto gravado
-//			return produtoRepository.save(produto);  //"INSERT"
-//				
-				
-				
+		Optional<Pessoa> findPessoa = pessoaRepository.findById(pessoa.getId());
+		
+		if(findPessoa.isPresent()) {
+			Pessoa updPessoa = findPessoa.get();
+			updPessoa.setNome(pessoa.getNome());
+            updPessoa.setEndereco(pessoa.getEndereco());
+            updPessoa.setCep(pessoa.getCep());
+            updPessoa.setCidade(pessoa.getCidade());
+            updPessoa.setUf(pessoa.getUf());
+			return pessoaRepository.save(updPessoa); // update
+		}
+		return pessoaRepository.save(pessoa);
+
 	}
 	
 //	Obter Pessoa por ID para mala direta
