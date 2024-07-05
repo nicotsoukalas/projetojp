@@ -21,11 +21,15 @@ public class ContatoService {
 	private PessoaRepository pessoaRepository;
 
 
-	public Contato save(Long id, Contato contato) {  //	Adicionar um novo Contato a uma Pessoa
-        Optional<Pessoa> pessoa = pessoaRepository.findById(id); // busca pessoa pelo id
-        // Tratar erro se pessoa não estiver presente
-        Pessoa findPessoa = pessoa.get(); // obtém a pessoa do Optional
-        contato.setPessoa(findPessoa); // Associar o contato à pessoa
+	public Contato save(Contato contato) {  // Adicionar um novo Contato a uma Pessoa
+        if (contato.getPessoa() == null || contato.getPessoa().getId() == null) {
+            throw new IllegalArgumentException("Pessoa ID is required");
+        }
+        Optional<Pessoa> pessoa = pessoaRepository.findById(contato.getPessoa().getId()); // busca pessoa pelo id
+        if (!pessoa.isPresent()) {
+            return null; // ou lançar uma exceção apropriada
+        }
+        contato.setPessoa(pessoa.get()); // Associar o contato à pessoa
         return contatoRepository.save(contato); // salva o contato associado à pessoa no BD
     }
 	

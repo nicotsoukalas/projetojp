@@ -51,13 +51,17 @@ public class PessoaController {
 		List<Pessoa> pessoa = pessoaService.findAll();
 		if(pessoa == null) {
 			return ResponseEntity.notFound().build();
-		} else {
-			return ResponseEntity.ok(pessoa);
+		} 
+		if(pessoa.size() == 0) {
+			return ResponseEntity.noContent().build();
 		}
+			return ResponseEntity.ok(pessoa);
+		
 	}
 	
-	@PutMapping				//		(/api/pessoas/{id}) PUT atualiza uma Pessoa existente
-	public ResponseEntity<Pessoa> update(@RequestBody Pessoa pessoa) {
+	@PutMapping("/{id}")				//		(/api/pessoas/{id}) PUT atualiza uma Pessoa existente
+	public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody Pessoa pessoa) {
+		pessoa.setId(id);
 		Pessoa updPessoa = pessoaService.update(pessoa);
 		if(updPessoa == null) {
 			return ResponseEntity.notFound().build();
@@ -66,7 +70,7 @@ public class PessoaController {
 		}
 	}
 	
-	@DeleteMapping			//		(/api/pessoas/{id}) DELETE  remove uma Pessoa por ID
+	@DeleteMapping("/{id}")			//	(/api/pessoas/{id}) DELETE  remove uma Pessoa por ID
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		pessoaService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

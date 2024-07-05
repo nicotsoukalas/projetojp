@@ -17,7 +17,10 @@ public class PessoaService {
 	
 	public Pessoa save(Pessoa pessoa) {  //	Criar Pessoa Falta tratamento Se algum campo for nulo
 		
-		Optional<Pessoa> findPessoa = pessoaRepository.findById(pessoa.getId()); //pesquisar se a pessoa  existe
+		if(pessoa.getId() == null) {
+			return pessoaRepository.save(pessoa);
+		}
+		Optional<Pessoa> findPessoa = pessoaRepository.findById(pessoa.getId()); // caso atualização
 			if(findPessoa.isPresent()) { 
 				Pessoa updPessoa = findPessoa.get(); // define o id em updPessoa			
 	            updPessoa.setNome(pessoa.getNome());
@@ -57,7 +60,7 @@ public class PessoaService {
 		return pessoaRepository.save(pessoa);
 
 	}
-	
+
 //	Obter Pessoa por ID para mala direta
 
 	public void delete(Long id) {

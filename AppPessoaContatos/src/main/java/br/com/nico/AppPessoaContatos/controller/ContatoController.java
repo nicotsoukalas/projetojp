@@ -25,24 +25,18 @@ public class ContatoController {
 	@Autowired
 	ContatoService contatoService;
 	
-	  // POST /api/contatos/ (adiciona um novo Contato a uma Pessoa)
-    @PostMapping("/{pessoaId}")
-    public ResponseEntity<Contato> save(@PathVariable Long id,@RequestBody Contato contato){
-		Contato newContato = contatoService.save(id, contato);
+	 @PostMapping("/")
+	    public ResponseEntity<Contato> save(@RequestBody Contato contato){
+
+		Contato newContato = contatoService.save(contato);
 		if(newContato == null) {
 			return ResponseEntity.notFound().build();
 		} else {
 			return ResponseEntity.ok(newContato);
 		}
-		
 	}
-//    public ResponseEntity<Contato> save(@PathVariable Long pessoaId, @RequestBody Contato contato) {
-//        Contato newContato = contatoService.save(pessoaId, contato);
-//        return ResponseEntity.ok(newContato);
-//    }
 
-    // GET /api/contatos/{id} (retorna os dados de um Contato por ID)
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") // GET retorna os dados de um Contato por ID
     public ResponseEntity<Optional<Contato>> findById(@PathVariable Long id){
 		Optional<Contato> findContato = contatoService.findContatoById(id);
 		if(findContato == null)
@@ -50,31 +44,21 @@ public class ContatoController {
 		return ResponseEntity.ok(findContato);
     }
 
-    // GET /api/contatos/pessoa/{pessoaId} (lista todos os Contatos de uma Pessoa)
-    @GetMapping("/pessoa/{pessoaId}")
-    public ResponseEntity<List<Contato>> listContato(@PathVariable Long pessoaId) {
-        List<Contato> contatos = contatoService.listContato(pessoaId);
+    @GetMapping("/pessoa/{id}") // GET lista todos os Contatos de uma Pessoa
+    public ResponseEntity<List<Contato>> listContato(@PathVariable Long id) {
+        List<Contato> contatos = contatoService.listContato(id);
         return ResponseEntity.ok(contatos);
     }
 
-    // PUT /api/contatos/{id} (atualiza um Contato existente)
-    @PutMapping("/{id}")
+    @PutMapping("/{id}") // PUT atualiza um Contato existente
     public ResponseEntity<Contato> updContato(@PathVariable Long id, @RequestBody Contato contato) {
         Contato updContato = contatoService.updContato(id, contato);
         return ResponseEntity.ok(updContato);
     }
 
-    // DELETE /api/contatos/{id} (remove um Contato por ID)
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") // DELETE remove um Contato por ID
     public ResponseEntity<?> deleteContato(@PathVariable Long id) {
         contatoService.deleteContato(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-//	POST /api/contatos/ (adiciona um novo Contato a uma Pessoa)
-//	GET /api/contatos/{id} (retorna os dados de um Contato por ID)
-//	GET /api/contatos/pessoa/{idPessoa} (lista todos os Contatos de uma Pessoa)
-//	PUT /api/contatos/{id} (atualiza um Contato existente)
-
-	
-
