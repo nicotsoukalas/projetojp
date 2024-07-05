@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.nico.AppPessoaContatos.dto.PessoaDTO;
 import br.com.nico.AppPessoaContatos.model.Pessoa;
 import br.com.nico.AppPessoaContatos.service.PessoaService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/api/pessoas")
@@ -26,6 +27,7 @@ public class PessoaController {
 	@Autowired
 	PessoaService pessoaService;
 	
+	@Operation(summary = "Grava o registro de uma pessoa")
 	@PostMapping 			// 		(/api/pessoas)POST 
 	public ResponseEntity<Pessoa> save(@RequestBody Pessoa pessoa) { 
 		Pessoa newPessoa = pessoaService.save(pessoa);
@@ -36,6 +38,7 @@ public class PessoaController {
 		}
 	}
 
+	@Operation(summary = "Busca pessoa por ID")
 	@GetMapping("/{id}")	 // 	(/api/pessoas/{id}) //GET Pessoa por ID
 	public ResponseEntity<Optional<Pessoa>> findById(@PathVariable Long id) {  
 		Optional<Pessoa> pessoa = pessoaService.findById(id);
@@ -46,6 +49,7 @@ public class PessoaController {
 		} return ResponseEntity.ok(pessoa);
 	}
 	
+	@Operation(summary = "Busca todos os registros de pessoas")
 	@GetMapping 			// 		(/api/pessoas) GET lista todas as Pessoas
 	public ResponseEntity<List<Pessoa>> findAll() { 	
 		List<Pessoa> pessoa = pessoaService.findAll();
@@ -59,6 +63,7 @@ public class PessoaController {
 		
 	}
 	
+	@Operation(summary = "Atualiza o registro de uma pessoa. Validação por ID")
 	@PutMapping("/{id}")				//		(/api/pessoas/{id}) PUT atualiza uma Pessoa existente
 	public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody Pessoa pessoa) {
 		pessoa.setId(id);
@@ -70,12 +75,14 @@ public class PessoaController {
 		}
 	}
 	
+	@Operation(summary = "Exclui o registro de uma pessoa por ID")
 	@DeleteMapping("/{id}")			//	(/api/pessoas/{id}) DELETE  remove uma Pessoa por ID
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		pessoaService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}	
 	
+	@Operation(summary = "Busca dados de mala direta por ID")
 	@GetMapping("/maladireta/{id}") // (/api/pessoas/maladireta/{id}) GET retorna dados de uma Pessoa por ID
     public ResponseEntity<PessoaDTO> findPessoaByIdMalaDireta(@PathVariable Long id) {
         Optional<Pessoa> pessoa = pessoaService.findById(id);

@@ -15,7 +15,7 @@ public class PessoaService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
-	public Pessoa save(Pessoa pessoa) {  //	Criar Pessoa Falta tratamento Se algum campo for nulo
+	public Pessoa save(Pessoa pessoa) {  
 		
 		if(pessoa.getId() == null) {
 			return pessoaRepository.save(pessoa);
