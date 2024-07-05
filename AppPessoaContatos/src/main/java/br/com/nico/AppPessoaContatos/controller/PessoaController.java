@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.nico.AppPessoaContatos.dto.PessoaDTO;
 import br.com.nico.AppPessoaContatos.model.Pessoa;
 import br.com.nico.AppPessoaContatos.service.PessoaService;
 
@@ -69,21 +70,17 @@ public class PessoaController {
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		pessoaService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-//	
+	}	
+	
+	@GetMapping("/maladireta/{id}") // (/api/pessoas/maladireta/{id}) GET retorna dados de uma Pessoa por ID
+    public ResponseEntity<PessoaDTO> findPessoaByIdMalaDireta(@PathVariable Long id) {
+        Optional<Pessoa> pessoa = pessoaService.findById(id);
+        if (pessoa.isPresent()) {
+            PessoaDTO pessoaDTO = new PessoaDTO(pessoa.get());
+            return ResponseEntity.ok(pessoaDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-	
-//	GET /api/pessoas/maladireta/{id} (retorna os dados de uma Pessoa por ID para mala direta)
-//	No endpoint de mala direta, utilizar o conceito de DTO. 
-//	Este conceito cria uma classe diferente da classe Pessoa, 
-//	com apenas os dados que precisamos (pesquisar!). 
-//	Dê preferência para a criação de Records (Java 17+).
-//	Utilizar os campos para o DTO: ID; Nome; Concatenação do Endereço, CEP, Cidade, UF
-//	Exemplo:
-//	{
-//	“ID”: 1,
-//	“Nome”: “Fulano”,
-//	“MalaDireta”: “Rua A, 1 – CEP: 11111-000 – Cidade/UF”
-//	}
-	
 }
