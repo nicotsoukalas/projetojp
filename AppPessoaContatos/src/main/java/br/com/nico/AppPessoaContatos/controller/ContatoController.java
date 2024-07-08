@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.nico.AppPessoaContatos.model.Contato;
 import br.com.nico.AppPessoaContatos.service.ContatoService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/api/contatos")
@@ -25,7 +26,8 @@ public class ContatoController {
 	@Autowired
 	ContatoService contatoService;
 	
-	 @PostMapping("/")
+	@Operation(summary = "Grava o registro de um Contato")
+	@PostMapping("/") // POST grava os dados de um Contato
 	    public ResponseEntity<Contato> save(@RequestBody Contato contato){
 
 		Contato newContato = contatoService.save(contato);
@@ -36,6 +38,7 @@ public class ContatoController {
 		}
 	}
 
+	@Operation(summary = "Retorna os dados de um Contato por ID")
     @GetMapping("/{id}") // GET retorna os dados de um Contato por ID
     public ResponseEntity<Optional<Contato>> findById(@PathVariable Long id){
 		Optional<Contato> findContato = contatoService.findContatoById(id);
@@ -44,18 +47,21 @@ public class ContatoController {
 		return ResponseEntity.ok(findContato);
     }
 
+	@Operation(summary = "Lista todos os Contatos de um ID de Pessoa ")
     @GetMapping("/pessoa/{id}") // GET lista todos os Contatos de uma Pessoa
     public ResponseEntity<List<Contato>> listContato(@PathVariable Long id) {
         List<Contato> contatos = contatoService.listContato(id);
         return ResponseEntity.ok(contatos);
     }
 
+	@Operation(summary = "Atualiza um Contato existente por ID")
     @PutMapping("/{id}") // PUT atualiza um Contato existente
     public ResponseEntity<Contato> updContato(@PathVariable Long id, @RequestBody Contato contato) {
         Contato updContato = contatoService.updContato(id, contato);
         return ResponseEntity.ok(updContato);
     }
 
+	@Operation(summary = "Remove um Contato por ID")
     @DeleteMapping("/{id}") // DELETE remove um Contato por ID
     public ResponseEntity<?> deleteContato(@PathVariable Long id) {
         contatoService.deleteContato(id);

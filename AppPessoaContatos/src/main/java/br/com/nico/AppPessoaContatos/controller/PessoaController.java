@@ -27,7 +27,7 @@ public class PessoaController {
 	@Autowired
 	PessoaService pessoaService;
 	
-	@Operation(summary = "Grava o registro de uma pessoa")
+	@Operation(summary = "Grava o registro de uma Pessoa")
 	@PostMapping 			// 		(/api/pessoas)POST 
 	public ResponseEntity<Pessoa> save(@RequestBody Pessoa pessoa) { 
 		Pessoa newPessoa = pessoaService.save(pessoa);
@@ -38,7 +38,7 @@ public class PessoaController {
 		}
 	}
 
-	@Operation(summary = "Busca pessoa por ID")
+	@Operation(summary = "Retorna uma Pessoa por ID")
 	@GetMapping("/{id}")	 // 	(/api/pessoas/{id}) //GET Pessoa por ID
 	public ResponseEntity<Optional<Pessoa>> findById(@PathVariable Long id) {  
 		Optional<Pessoa> pessoa = pessoaService.findById(id);
@@ -49,7 +49,7 @@ public class PessoaController {
 		} return ResponseEntity.ok(pessoa);
 	}
 	
-	@Operation(summary = "Busca todos os registros de pessoas")
+	@Operation(summary = "Busca todos os registros de Pessoas")
 	@GetMapping 			// 		(/api/pessoas) GET lista todas as Pessoas
 	public ResponseEntity<List<Pessoa>> findAll() { 	
 		List<Pessoa> pessoa = pessoaService.findAll();
@@ -63,7 +63,7 @@ public class PessoaController {
 		
 	}
 	
-	@Operation(summary = "Atualiza o registro de uma pessoa. Validação por ID")
+	@Operation(summary = "Atualiza o registro de uma Pessoa. Validação por ID")
 	@PutMapping("/{id}")				//		(/api/pessoas/{id}) PUT atualiza uma Pessoa existente
 	public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody Pessoa pessoa) {
 		pessoa.setId(id);
@@ -75,7 +75,7 @@ public class PessoaController {
 		}
 	}
 	
-	@Operation(summary = "Exclui o registro de uma pessoa por ID")
+	@Operation(summary = "Exclui o registro de uma Pessoa por ID")
 	@DeleteMapping("/{id}")			//	(/api/pessoas/{id}) DELETE  remove uma Pessoa por ID
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		pessoaService.delete(id);
